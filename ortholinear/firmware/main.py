@@ -4,6 +4,7 @@ from kmk.kmk_keyboard import KMKKeyboard
 from kmk.scanners.keypad import ShiftRegisterKeys
 from kmk.keys import KC
 from kmk.modules.layers import Layers
+from kmk.handlers.sequences import send_string
 
 # Pinout
 PIN_DAT = board.D9
@@ -44,24 +45,29 @@ class HepOrtholinear(KMKKeyboard):
         MOD = KC.MO(1)
         NUMPAD = KC.TG(2)
 
+        SLBRC = send_string('[')
+        SRBRC = send_string(']')
+        CLBRC = send_string('{')
+        CRBRC = send_string('}')
+
         _______ = KC.TRNS
 
         self.keymap = [
             # Base layer
             [
-                KC.ESC,  KC.GRV,  KC.N1,   KC.N2,   KC.N3,   KC.N4,   KC.N5,   KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.MINS, KC.EQL,  KC.BSPC,
-                         KC.TAB,  KC.Q,    KC.W,    KC.E,    KC.R,    KC.T,    KC.Y,    KC.U,    KC.I,    KC.O,    KC.P,    KC.LBRC, KC.RBRC,
-                         KC.LCTL, KC.A,    KC.S,    KC.D,    KC.F,    KC.G,    KC.H,    KC.J,    KC.K,    KC.L,    KC.SCLN, KC.ENT,
-                         KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,    KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, KC.RSFT, KC.NO,
+                KC.GRV,  KC.GRV,  KC.N1,   KC.N2,   KC.N3,   KC.N4,   KC.N5,   KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.MINS, KC.EQL,  KC.BSPC,
+                         KC.TAB,  KC.Q,    KC.W,    KC.E,    KC.R,    KC.T,    KC.Y,    KC.U,    KC.I,    KC.O,    KC.P,    KC.BSPC, KC.BSPC,
+                         KC.LCTL, KC.A,    KC.S,    KC.D,    KC.F,    KC.G,    KC.H,    KC.J,    KC.K,    KC.L,    KC.SCLN, KC.QUOT,
+                         KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,    KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, KC.RSFT, KC.RSFT,
                                   KC.LGUI, KC.LALT,                   MOD,     KC.SPC,           KC.RALT, KC.RCTL,
             ],
             # Mod layer
             [
-                _______, _______, KC.F1,   KC.F2,   KC.F3,   KC.F4,   KC.F5,   KC.F6,   KC.F7,   KC.F8,   KC.F9,   KC.F10,  KC.F11,  KC.F12,  KC.DEL,
-                         _______, _______, _______, _______, _______, _______, KC.PGUP, KC.HOME, KC.UP,   KC.END,  _______, _______, _______,
-                         KC.CLCK, _______, _______, _______, NUMPAD,  _______, KC.PGDN, KC.LEFT, KC.DOWN, KC.RGHT, _______, KC.QUOT,
-                         _______, _______, _______, _______, _______, _______, KC.INS,  KC.APP,  _______, _______, KC.BSLS, _______, _______,
-                                  _______, _______,                   _______, _______,          _______, _______,
+                KC.ESC,  KC.ESC,  KC.F1,   KC.F2,   KC.F3,   KC.F4,   KC.F5,   KC.F6,   KC.F7,   KC.F8,   KC.F9,   KC.F10,  KC.F11,  KC.F12,  KC.DEL,
+                         _______, _______, _______, CLBRC,   CRBRC,   _______, KC.PGUP, KC.HOME, KC.UP,   KC.END,  _______, KC.DEL,  KC.DEL,
+                         KC.CLCK, _______, _______, SLBRC,   SRBRC,   _______, KC.PGDN, KC.LEFT, KC.DOWN, KC.RGHT, _______, _______,
+                         _______, _______, _______, _______, _______, _______, KC.INS,  KC.APP,  KC.LBRC, KC.RBRC, KC.BSLS, _______, NUMPAD,
+                                  _______, _______,                   _______, KC.ENT,           _______, _______,
             ],
             # Numpad layer
             [
@@ -72,6 +78,38 @@ class HepOrtholinear(KMKKeyboard):
                                   _______, _______,                   _______, _______,          _______, _______,
             ],
         ]
+        # SLBRC = KC.LSFT(KC.LBRC)
+        # SRBRC = KC.LSFT(KC.RBRC)
+        # LBRACK = KC.LSFT(KC.N9)
+        # RBRACK = KC.LSFT(KC.N0)
+        # TD_QUOT = KC.TD(KC.QUOT, KC.LSFT(KC.QUOT))
+        # 
+        # self.keymap = [
+        #     # Base layer
+        #     [
+        #         KC.ESC,  KC.GRV,  KC.N1,   KC.N2,   KC.N3,   KC.N4,   KC.N5,   KC.N6,   KC.N7,   KC.N8,   KC.N9,   KC.N0,   KC.MINS, KC.EQL,  KC.BSPC,
+        #                  KC.TAB,  KC.Q,    KC.W,    KC.E,    KC.R,    KC.T,    KC.Y,    KC.U,    KC.I,    KC.O,    KC.P,    KC.LBRC, KC.RBRC,
+        #                  KC.LCTL, KC.A,    KC.S,    KC.D,    KC.F,    KC.G,    KC.H,    KC.J,    KC.K,    KC.L,    KC.SCLN, KC.ENT,
+        #                  KC.LSFT, KC.Z,    KC.X,    KC.C,    KC.V,    KC.B,    KC.N,    KC.M,    KC.COMM, KC.DOT,  KC.SLSH, KC.RSFT, KC.RSFT,
+        #                           KC.LGUI, KC.LALT,                   MOD,     KC.SPC,           KC.RALT, KC.RCTL,
+        #     ],
+        #     # Mod layer
+        #     [
+        #         _______, _______, KC.F1,   KC.F2,   KC.F3,   KC.F4,   KC.F5,   KC.F6,   KC.F7,   KC.F8,   KC.F9,   KC.F10,  KC.F11,  KC.F12,  KC.DEL,
+        #                  _______, TD_QUOT, _______, KC.LBRC, KC.RBRC, _______, KC.PGUP, KC.HOME, KC.UP,   KC.END,  _______, _______, _______,
+        #                  KC.CLCK, _______, _______, SLBRC,   SRBRC,   _______, KC.PGDN, KC.LEFT, KC.DOWN, KC.RGHT, _______, KC.QUOT,
+        #                  _______, _______, _______, LBRACK,  RBRACK,  _______, KC.INS,  KC.APP,  KC.LBRC, KC.RBRC, KC.BSLS, _______, NUMPAD,
+        #                           _______, _______,                   _______, _______,          _______, _______,
+        #     ],
+        #     # Numpad layer
+        #     [
+        #         _______, _______, _______, _______, _______, _______, _______, _______, KC.N7,   KC.N8,   KC.N9,   KC.PSLS, _______, _______, _______,
+        #                  _______, _______, _______, _______, _______, _______, _______, KC.N4,   KC.N5,   KC.N6,   KC.PAST, _______, _______,
+        #                  _______, _______, _______, _______, _______, _______, _______, KC.N1,   KC.N2,   KC.N3,   _______, _______, 
+        #                  _______, _______, _______, _______, _______, _______, _______, KC.N0,   _______, _______, _______, _______, _______,
+        #                           _______, _______,                   _______, _______,          _______, _______,
+        #     ],
+        # ]
 
 
 if __name__ == '__main__':
